@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/screens/login_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/screens/welcome_screen.dart';
 
 void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(useMaterial3: true),
-    home: const App(),
-  ));
+  runApp(
+    const ProviderScope(child: App()),
+  );
 }
 
 class App extends StatelessWidget {
@@ -13,6 +13,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginScreen();
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const WelcomeScreen(),
+    );
   }
 }

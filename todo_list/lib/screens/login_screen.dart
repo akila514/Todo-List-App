@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_list/constants/colors.dart';
-import 'package:todo_list/constants/text_styles.dart';
-import 'package:todo_list/screens/signup_screen.dart';
+import 'package:todo_list/provider/user_provider.dart';
+
+import '../constants/colors.dart';
+import '../constants/text_styles.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -13,65 +14,93 @@ class LoginScreen extends ConsumerStatefulWidget {
   }
 }
 
-void navigateToSignupSceen(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const SignUpScreen(),
-    ),
-  );
-}
-
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  var enteredUsername = '';
+  var enteredPassword = '';
+  final _formKey = GlobalKey<FormState>();
+
+  void _validateCredentials() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    } else {
+      return;
+    }
+    for (final user in ref.read(userProvider)) {
+      if (user.username == enteredUsername &&
+          user.password == enteredPassword) {
+        print('Success');
+        return;
+      }
+    }
+    print('failed');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        body: Column(
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Todo',
-              style: largeTextStyle.copyWith(fontSize: 40),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Image.asset(
-              'assets/images/image1.jpg',
-              width: double.infinity,
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text(
-              'Welcome to Todo',
-              style: largeTextStyle,
-            ),
-            const SizedBox(
-              height: 40,
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty || value.length > 20) {
+                        return 'Username must have 1-20 characters';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (value) {
+                      setState(() {
+                        enteredUsername = value!;
+                      });
+                    },
+                    decoration:
+                        const InputDecoration(label: Text('Enter a Username')),
+                  ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty || value.length > 20) {
+                        return 'Username must have 1-20 characters';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onSaved: (value) {
+                      setState(() {
+                        enteredPassword = value!;
+                      });
+                    },
+                    decoration:
+                        const InputDecoration(label: Text('Enter a password')),
+                  ),
+                ],
+              ),
             ),
             TextButton(
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(buttonColor),
                   padding: MaterialStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 20, vertical: 10))),
-              onPressed: () {},
+              onPressed: () {
+                _validateCredentials();
+              },
               child: const Text(
                 'Login',
                 style: normalTextStyle,
               ),
             ),
-            TextButton(
-              onPressed: () {
-                navigateToSignupSceen(context);
-              },
-              child: const Text(
-                'Signup',
-                style: normalTextStyle,
-              ),
-            ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
