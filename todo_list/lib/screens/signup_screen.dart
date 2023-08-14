@@ -35,12 +35,16 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               username: enteredUsername,
               password: enteredPassword),
         );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
+        backgroundColor: backgroundColor,
+        foregroundColor: primaryTextColor,
         title: const Text('SignUp'),
       ),
       body: Padding(
@@ -51,11 +55,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             Form(
                 key: formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TextFormField(
+                      style: const TextStyle(color: primaryTextColor),
                       validator: (value) {
                         if (value!.isEmpty || value.length > 20) {
-                          return 'Username must have 1-20 characters';
+                          return 'Name must have 1-20 characters';
                         } else {
                           return null;
                         }
@@ -65,16 +71,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           enteredName = value!;
                         });
                       },
-                      decoration:
-                          const InputDecoration(label: Text('Enter name')),
+                      decoration: const InputDecoration(
+                          label: Text(
+                        'Enter name',
+                        style: textFieldTextStyle,
+                      )),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      style: const TextStyle(color: primaryTextColor),
                       validator: (value) {
-                        if (value!.isEmpty || value.length > 20) {
-                          return 'Username must have 1-20 characters';
+                        if (value!.isEmpty || value.length > 10) {
+                          return 'Username must have 1-10 characters';
                         } else {
                           return null;
                         }
@@ -85,12 +95,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         });
                       },
                       decoration: const InputDecoration(
-                          label: Text('Enter a Username')),
+                          label: Text(
+                        'Enter a Username',
+                        style: textFieldTextStyle,
+                      )),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     TextFormField(
+                      style: const TextStyle(color: primaryTextColor),
                       validator: (value) {
-                        if (value!.isEmpty || value.length > 20) {
-                          return 'Username must have 1-20 characters';
+                        if (value!.isEmpty || value.length > 10) {
+                          return 'Password must have 1-8 characters';
                         } else {
                           return null;
                         }
@@ -101,25 +118,33 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         });
                       },
                       decoration: const InputDecoration(
-                          label: Text('Enter a password')),
+                          label: Text(
+                        'Enter a password',
+                        style: textFieldTextStyle,
+                      )),
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 60,
                     ),
-                    TextButton(
-                      style: const ButtonStyle(
-                          alignment: Alignment.centerLeft,
-                          backgroundColor:
-                              MaterialStatePropertyAll(buttonColor),
-                          padding: MaterialStatePropertyAll(
-                              EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10))),
-                      onPressed: () {
-                        _validateInput();
-                      },
-                      child: const Text(
-                        'SignUp',
-                        style: normalTextStyle,
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: TextButton(
+                        style: const ButtonStyle(
+                            alignment: Alignment.center,
+                            backgroundColor:
+                                MaterialStatePropertyAll(buttonColor),
+                            padding: MaterialStatePropertyAll(
+                                EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10))),
+                        onPressed: () {
+                          _validateInput();
+                        },
+                        child: const Text(
+                          'SignUp',
+                          style: normalTextStyle,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],

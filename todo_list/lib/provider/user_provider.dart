@@ -9,7 +9,7 @@ class UserNotifier extends StateNotifier<List<User>> {
   }
 
   void deleteUser(User user) {
-    state = state.where((u) => user.id != user.id).toList();
+    state = state.where((u) => user.id != u.id).toList();
   }
 
   void replceUserList(List<User> userList) {
